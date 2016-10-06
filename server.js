@@ -15,7 +15,7 @@ app.get('/', function(req, res){
   res.sendFile(__dirname + '/public/game.html');
 });
 
-app.use(express.static('public'));
+app.use(express.static(__dirname + '/public'));
 
 io.on('connection', function(socket){
   socket.on('room', function(room) {
