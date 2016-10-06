@@ -55,15 +55,16 @@ io.on('connection', function(socket){
         let p2 = turn[players[1]];
         let result = processTurn(p1, p2);
         if (result === PLAYER_ONE_WIN) {
-           socket.to(players[0]).emit('result', 'win');
-           socket.to(players[1]).emit('result', 'lose');
+           io.sockets.connected[players[0]].emit('result', 'win');
+           io.sockets.connected[players[1]].emit('result', 'lose');
         } else if (result === PLAYER_TWO_WIN) {
-           socket.to(players[0]).emit('result', 'lose');
-           socket.to(players[1]).emit('result', 'win');
+           io.sockets.connected[players[0]].emit('result', 'lose');
+           io.sockets.connected[players[1]].emit('result', 'win');
         } else if (result === TIE) {
-           socket.to(players[0]).emit('result', 'tie');
-           socket.to(players[1]).emit('result', 'tie');
+           io.sockets.connected[players[0]].emit('result', 'tie');
+           io.sockets.connected[players[1]].emit('result', 'tie');
         }
+        roomData.turnNumber += 1;
      }
   });
   socket.on('disconnect', function() {

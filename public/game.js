@@ -52,11 +52,25 @@ function create() {
    socket.on('roomReady', function() {
       startFight( () => {
          getMovesFromUser( moves => {
-            console.log(moves);
             socket.emit('moves', {room: roomName, moves: moves});
             // send the moves to the server
          });
       });
+   });
+   socket.on('result', function(result) {
+      if (result === 'win') {
+         gameStateText.text = 'You won!';
+      } else if (result === 'lose') {
+         gameStateText.text = 'You Lost!';
+      } else if (result === 'tie') {
+         gameStateText.text = 'Tie! Wowee!';
+      }
+      setTimeout( () => {
+         getMovesFromUser( moves => {
+            socket.emit('moves', {room: roomName, moves: moves});
+         });
+      }, 5000);
+
    });
 }
 
